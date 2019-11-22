@@ -54,6 +54,7 @@ ARG NEW_NEO4J_PASSWD
 
 RUN echo "NEW_NEO4J_PASSWD=$NEW_NEO4J_PASSWD"
 RUN chmod +x import_db_dump.sh
+RUN neo4j --version
 RUN neo4j start && sleep 10 \
 	&& echo "CALL dbms.changePassword('"${NEW_NEO4J_PASSWD}"');" | /var/lib/neo4j/bin/cypher-shell -u neo4j -p neo4j \
 	&& ./import_db_dump.sh cinema.cql neo4j ${NEW_NEO4J_PASSWD} \
@@ -74,8 +75,10 @@ RUN ps -aux
 # EXPOSE 7474 7473 7687
 RUN touch /logs/debug.log && chmod a+x /logs/debug.log && chown -R neo4j:neo4j /logs
 RUN chown neo4j:neo4j /sbin/tini
+RUN chown neo4j:neo4j /data/databases/store_lock
+RUN chown neo4j:neo4j /data/databases/graph.db/*
 RUN ls -l /logs
-ENTRYPOINT ["/bin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh", "neo4j"]
+ENTRYPOINT ["/sbin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh", "neo4j"]
 # ENTRYPOINT ["/sbin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh"]
 # ENTRYPOINT ["/bin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh"]
 # CMD ["neo4j", "start"]
