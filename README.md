@@ -5,8 +5,8 @@
 docker-compose build db
 ```
 
-where *NEW_NEO4J_PASSWD* is set by you environment variable containing new
-password for neo4j dbms instance.
+Note: Build variable *NEW_NEO4J_PASSWD* is set in docker-compose. It contains
+values which will be used as new password for dbms instance during build process.
 
 ## running
 ```
