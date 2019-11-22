@@ -1,22 +1,26 @@
 # Project docker-team11
-# db image
+# db service
 ## building
 ```
-docker build . -t "cinema-db" -f db.Dockerfile --build-arg passwd=${NEW_NEO4J_PASSWD}
-```
-where *NEW_NEO4J_PASSWD* is set by you environment variable containing new
-password for neo4j dbms instance.
-## running
-```
-./run_db.sh
+docker-compose build db
 ```
 
-# web application
+where *NEW_NEO4J_PASSWD* is set by you environment variable containing new
+password for neo4j dbms instance.
+
+## running
+```
+docker-compose up -d db
+```
+
+# web application service
 ## building
 ```
-docker build . -t "cinema-app" -f webapp.Dockerfile
+docker-compose build webapp
 ```
 ## running
 ```
-./run_webapp.sh
+docker-compose up -d webapp
 ```
+
+

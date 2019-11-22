@@ -16,4 +16,4 @@ RUN git clone https://github.com/gkostkowski/cinema-web-app.git \
 	&& mv cinema-web-app/web-app/cinema-app-0.0.1.jar \
 		/var/lib/cinema-app/cinema-app-0.0.1.jar
 
-# CMD ["java", "-jar", "/var/lib/cinema-app/cinema-app-0.0.1.jar", "--spring.config.location=file:///var/lib/cinema-app/cinema-app.properties"]
+CMD ["java", "-jar", "/var/lib/cinema-app/cinema-app-0.0.1.jar", "--spring.config.location=file:///var/lib/cinema-app/cinema-app.properties"]

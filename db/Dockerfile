@@ -50,13 +50,19 @@ WORKDIR mkdir /home/db
 ADD https://raw.githubusercontent.com/gkostkowski/cinema-web-app/master/neo4j-db/import_db_dump.sh ./import_db_dump.sh
 ADD https://raw.githubusercontent.com/gkostkowski/cinema-web-app/master/neo4j-db/cinema.cql ./cinema.cql
 
-ARG passwd
+ARG NEW_NEO4J_PASSWD
 
+RUN echo "NEW_NEO4J_PASSWD=$NEW_NEO4J_PASSWD"
 RUN chmod +x import_db_dump.sh
 RUN neo4j start && sleep 10 \
-	&& echo "CALL dbms.changePassword('"${passwd}"');" | /var/lib/neo4j/bin/cypher-shell -u neo4j -p neo4j \
-	&& ./import_db_dump.sh cinema.cql neo4j ${passwd} \
+	&& echo "CALL dbms.changePassword('"${NEW_NEO4J_PASSWD}"');" | /var/lib/neo4j/bin/cypher-shell -u neo4j -p neo4j \
+	&& ./import_db_dump.sh cinema.cql neo4j ${NEW_NEO4J_PASSWD} \
 	&& neo4j stop && sleep 60
+
+RUN apt update && apt install -y procps
+RUN ps -aux
+# RUN ps -aux | grep neo4j | awk '{print $2}' | xargs killall -q
+# RUN pkill -9 neo4j
 
 # RUN ps aux | grep neo4j
 # WORKDIR "${NEO4J_HOME}"
@@ -69,6 +75,7 @@ RUN neo4j start && sleep 10 \
 RUN touch /logs/debug.log && chmod a+x /logs/debug.log && chown -R neo4j:neo4j /logs
 RUN chown neo4j:neo4j /sbin/tini
 RUN ls -l /logs
-ENTRYPOINT ["/sbin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh", "neo4j"]
+ENTRYPOINT ["/bin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh", "neo4j"]
 # ENTRYPOINT ["/sbin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh"]
-# CMD ["neo4j"]
+# ENTRYPOINT ["/bin/tini", "-g", "--", "/home/db/db-docker-entrypoint.sh"]
+# CMD ["neo4j", "start"]
