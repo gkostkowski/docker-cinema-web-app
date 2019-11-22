@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    container_name: db-container
+    build: ./db
+    ports:
+        - "17473:7473"
+        - "17474:7474"
+        - "17687:7687"
+    volumes:
+        - ./neo4j.conf:/etc/neo4j/neo4j.conf
+    entrypoint:
+        - neo4j
+    networks:
+      - internal
+
+  webapp:
+    container_name: webapp-container
+    build: ./webapp
+    ports:
+        - "8080:8080"
+    volumes:
+        - ./cinema-app.properties:/var/lib/cinema-app/cinema-app.properties
+    entrypoint:
+      - java -jar /var/lib/cinema-app/cinema-app-0.0.1.jar --spring.config.location=file:///var/lib/cinema-app/cinema-app.properties
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: 'bridge'
