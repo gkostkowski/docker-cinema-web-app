@@ -5,14 +5,24 @@
 docker-compose build db
 ```
 
-Note: Build variable *NEW_NEO4J_PASSWD* is set in docker-compose. It contains
-values which will be used as new password for dbms instance during build process.
-
 ## running
+
 ```
 docker-compose up -d db
 ```
+After starting container, configure it.
 
+## configuring
+You must change neo4j DBMS password as neo4j policy requires this.
+```
+./set_dbms_passwd.sh NEW_NEO4J_PASSWD
+```
+You should additionally run script *import_db.sh*
+to import database dump (already placed inside container).
+
+```
+./import_db.sh NEW_NEO4J_PASSWD
+```
 # web application service
 ## building
 ```
@@ -22,5 +32,3 @@ docker-compose build webapp
 ```
 docker-compose up -d webapp
 ```
-
-

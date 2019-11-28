@@ -4,15 +4,14 @@ services:
     container_name: db-container
     build:
       context: ./db
-      args:
-        NEW_NEO4J_PASSWD: neopasswd
     restart: always
-    ports:
-        - "17473:7473"
-        - "17474:7474"
-        - "17687:7687"
-    volumes:
-        - ./neo4j.conf:/etc/neo4j/neo4j.conf
+    # uncomment to check db in web browser
+    # ports:
+    #     - "17473:7473"
+    #     - "17474:7474"
+    #     - "17687:7687"
+    # volumes:
+    #     - ./db/neo4j.conf:/etc/neo4j/neo4j.conf
     networks:
       - internal
 
@@ -22,7 +21,7 @@ services:
     ports:
         - "8080:8080"
     volumes:
-        - ./cinema-app.properties:/var/lib/cinema-app/cinema-app.properties
+        - ./webapp/cinema-app.properties:/var/lib/cinema-app/cinema-app.properties
     networks:
       - internal
 
