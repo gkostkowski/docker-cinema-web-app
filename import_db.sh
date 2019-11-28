@@ -5,5 +5,5 @@ if [[ -z "$1" ]];then
 fi
 SERVICE_NAME="db"
 echo 'Importing dump ...'
-docker-compose exec "$SERVICE_NAME" /
+docker-compose exec "$SERVICE_NAME" \
 	/home/db/import_db_dump.sh /home/db/cinema.cql neo4j "$1"
