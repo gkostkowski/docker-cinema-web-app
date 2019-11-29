@@ -10,8 +10,8 @@ services:
     #     - "17473:7473"
     #     - "17474:7474"
     #     - "17687:7687"
-    # volumes:
-    #     - ./db/neo4j.conf:/etc/neo4j/neo4j.conf
+    volumes:
+        - ./db/data:/var/lib/neo4j/data
     networks:
       - internal
 

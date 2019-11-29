@@ -10,11 +10,13 @@ docker-compose build db
 ```
 docker-compose up -d db
 ```
-After starting container, configure it.
+After starting container, configure it. Keep in mind that db service need 
+about 30 seconds to start, you can check it using ```docker-compose logs db```.
 
 ## configuring
 You must change neo4j DBMS password as neo4j policy requires this.
 ```
+
 ./set_dbms_passwd.sh NEW_NEO4J_PASSWD
 ```
 You should additionally run script *import_db.sh*
@@ -32,3 +34,4 @@ docker-compose build webapp
 ```
 docker-compose up -d webapp
 ```
+
